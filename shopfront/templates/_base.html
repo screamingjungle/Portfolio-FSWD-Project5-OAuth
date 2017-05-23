@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Item Catalog</title>
+
+{% include 'partial/header_base.html' %}
+{% include 'partial/header_semantic_menu.html' %}
+
+  </head>
+
+  <body>
+{% include 'partial/nav.html' %}
+
+    <div id="main-container" class="ui container">
+
+{% include 'partial/flash_messages.html' %}
+
+      <div class="container">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+
+{% include 'partial/_debug_session.html' %}
+
+{% include 'partial/footer_semantic_menu.html' %}
+
+  </body>
+</html>

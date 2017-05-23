@@ -1,0 +1,12 @@
+{% if session['user_id'] %}
+    <figure class="creator">
+  {% if creator.picture %}
+        <img src="{{ creator.picture }}">
+  {% else %}
+        <img src="{{ url_for('static', filename='blank_user.gif') }}">
+  {% endif %}
+        <figcaption>{{ creator.name }}</figcaption>
+    </figure>
+{% else %}
+  by {{ creator.name or 'unknown' }}
+{% endif %}

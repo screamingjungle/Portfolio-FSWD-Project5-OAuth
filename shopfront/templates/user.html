@@ -1,0 +1,37 @@
+{% extends "_base.html" %}
+{% block content %}
+
+{% set description_maxchars = MAX_ITEM_DESCRIPTION_CHARS %}
+{% set uid = None %}
+{% set creator = user %}
+
+<p>TODO: show collection and categories</p>
+
+<div class="ui vertical masthead center aligned segment">
+  <h1 class="ui header">
+    {{user.name}}
+  </h1>
+{% if creator %}
+  {% set uid = creator.id %}
+  <h3>{% include 'partial/figure_creator_picture.html' %}</h3>
+{% endif %}
+</div>
+
+{% if session['group'] == 'admin' or
+  (session['group'] == "standard" and session['user_id'] == uid) %}
+  <div class="ui center aligned header">
+    <a class="ui basic green button" href="{{ url_for('addItem', user_id=uid) }}">
+        Add Item
+    </a>
+    <a class="ui basic yellow button" href="{{ url_for('editUser', user_id=user.id ) }}">
+        Edit User
+    </a>
+    <a class="ui basic red button" href=" url_for('deleteUser', user_id=user.id ) ">
+        Delete User
+    </a>
+{% endif %}
+</h1>
+
+{% include 'partial/listview_items.html' %}
+
+{% endblock %}

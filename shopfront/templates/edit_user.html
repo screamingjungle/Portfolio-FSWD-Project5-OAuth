@@ -1,0 +1,65 @@
+{% extends "_base.html" %}
+{% block content %}
+
+<h1 class="ui header">
+  {% if user.id %} Edit {% else %} Create {% endif %} User
+</h1>
+
+<form class="ui form" method="post">
+  <div class="field">
+
+    <label for="name">Name</label>
+    <input type="text" maxlength="100" name="name" value="{{user.name or ''}}" required>
+{% if params.error_name %}
+    <div class="ui red pointing label">{{params.error_name}}</div>
+{% endif %}
+
+  </div>
+  <div class="field">
+
+    <label for="email">Email</label>
+    <input type="text" maxlength="100" name="email" value="{{user.email or ''}}" required>
+{% if params.error_email %}
+    <div class="ui red pointing label">{{params.error_email}}</div>
+{% endif %}
+
+  </div>
+  <div class="field">
+
+    <label for="picture">Picture</label>
+    <input type="text" maxlength="100" name="picture" value="{{user.picture or ''}}">
+{% if params.error_picture %}
+    <div class="ui red pointing label">{{params.error_picture}}</div>
+{% endif %}
+
+  </div>
+
+{% if session['group'] == 'admin' %}
+  <div class="field">
+
+    <label>Group</label>
+    <select class="ui fluid dropdown" name="group">
+  {% for group in ['disabled', 'readonly','standard','admin'] %}
+      <option value="{{group}}" {% if user.group == group %} selected {% endif %}>{{group}}</option>
+  {% endfor %}
+    </select>
+{% if params.error_group %}
+    <div class="ui red pointing label">{{params.error_group}}</div>
+{% endif %}
+  </div>
+{% endif %}
+
+  <div class="field">
+
+    <button class="ui green basic button" type="submit">Save</button>
+{% if params.error_submit %}
+    <div class="ui red pointing label">{{params.error_submit}}</div>
+{% endif %}
+
+    <a class="cancel" href="{{url_for('user_management')}}">Cancel</a>
+  </div>
+
+  <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+</form>
+
+{% endblock %}

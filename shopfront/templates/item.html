@@ -1,0 +1,10 @@
+{% extends "_base.html" %}
+{% block content %}
+
+{% set creator=item.usr %}
+
+<div class="ui divided items">
+{% include 'partial/single_item.html' %}
+</div>
+
+{% endblock %}

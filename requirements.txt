@@ -1,0 +1,5 @@
+requests==2.13.0
+Flask==0.12.1
+SQLAlchemy==1.1.9
+psycopg2==2.7.1
+flask-seasurf==0.2.2

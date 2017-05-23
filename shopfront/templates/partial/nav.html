@@ -1,0 +1,40 @@
+{% include 'partial/nav_category.html' %}
+{#
+
+    <nav>
+        <div class="ui teal fixed inverted menu">
+            <div class="ui container">
+                <a class="active item" href="{{ url_for('homepage') }}">
+                  Home
+                </a>
+{% if 'username' in session %}
+                <a class="item" href=" url_for('newCategory') ">
+          New category
+        </a>
+{% endif %}
+
+                <a class="item" href="newCollection">
+                  New collection
+                </a>
+                <div class="right menu">
+{% if 'username' not in session %}
+                    <a class="item" href="{{ url_for('showLogin') }}">
+                      Login
+                    </a>
+{% else %}
+                    <a class="item">
+                     </a>
+                    <a class="item" href="{{ url_for('disconnect') }}">
+                      Logout
+                    </a>
+{% endif %}
+                </div>
+            </div>
+        </div>
+
+
+
+    </nav>
+
+
+#}

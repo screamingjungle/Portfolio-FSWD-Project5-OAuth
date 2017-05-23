@@ -1,0 +1,175 @@
+{% set nav_dropdown_max = 5 %}
+{% set nav_dropdown_maxchars = 15 %}
+<nav class="ui inverted teal fixed menu">
+  <div class="ui container">
+    <a class="active item" href="/">
+      <i class="home icon"></i> <span class="menuicon">Home</span>
+    </a>
+
+    <a class="browse item">
+      <i class="grid layout icon"></i> <span class="menuicon">Browse</span>
+      <i class="dropdown icon"></i>
+    </a>
+{% if session['user_id'] %}
+    
+      <div class="ui dropdown item">
+        <a href="{{ url_for('showMessages', user_id = session['user_id']) }}">
+          <i class="mail icon"></i> {{ session['messages'] or '' }} 
+          <span class="menuicon">&nbsp;&nbsp;Messages</span> 
+          {% if session['messages'] > 0 %} <i class="icon dropdown"></i> {% endif %}
+        </a>
+  {% if session['messages'] > 0 %}
+        <div class="menu">
+    {% if messages %}
+      {% for message in messages %}
+          <a class="item" href="{{ url_for('addItem', user_id = session['user_id']) }}">
+            <div class="ui label">{{ messages[message] }}</div> {{ message }}
+          </a>
+      {% endfor %}
+          <a class="item" href="{{ url_for('showMessages', user_id = session['user_id']) }}">
+            <i class="settings icon"></i> See All
+          </a>
+    {% else %}
+          <a class="item" href="{{ url_for('showMessages', user_id = session['user_id']) }}">
+            <i class="settings icon"></i> Refresh
+          </a>
+    {% endif %}
+        </div>
+  {% endif %}
+      </div>
+
+{% endif %}
+    <div class="right menu">
+      <div class="item">
+
+          <div class="ui category search">
+            <div class="ui icon input">
+              <form action="{{ url_for('search') }}" method="post" name="search">
+                <input class="prompt" name="sterm" placeholder="Search items..." type="text">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+              </form>
+              <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+          </div>
+
+        </div>
+
+{% if session['user_id'] %}
+      <div class="ui dropdown item">
+        <i class="plus icon"></i> <span class="menuicon">Add</span> <i class="icon dropdown"></i>
+        <div class="menu">
+  {% if session['group'] == 'admin' %}
+          <a class="item" href="{{ url_for('addUser') }}">
+            <i class="add user icon"></i> Add User
+          </a>
+  {% endif %}
+          <a class="item" href="{{ url_for('addItem', user_id = session['user_id']) }}">
+            <i class="edit icon"></i> Add Item
+          </a>
+          <a class="item" href="{{ url_for('addCategory', user_id = session['user_id']) }}">
+            <i class="globe icon"></i> Add Category
+          </a>
+          <a class="item" href="{{ url_for('addCollection', user_id = session['user_id']) }}">
+            <i class="settings icon"></i> Add Collection
+          </a>
+        </div>
+      </div>
+{% endif %}
+    </div>
+
+    <div class="right menu">
+{% if 'username' not in session %}
+      <a class="item" href="{{ url_for('showLogin') }}"><i class="power icon"></i> Login</a>
+{% else %}
+      <div class="ui dropdown item">
+        <i class="settings icon"></i> <span class="menuicon">Account</span> <i class="icon dropdown"></i>
+        <div class="menu">
+  {% if session['group'] == 'admin' %}
+          <a class="item" href="{{ url_for('user_management') }}">
+            <i class="add user icon"></i> Users
+          </a>
+  {% endif %}
+
+          <a class="item" href="{{ url_for('showUserItem', user_id = session['user_id']) }}">
+            <i class="edit icon"></i> My Items
+          </a>
+          <a class="item" href="{{ url_for('showUserCategory', user_id = session['user_id']) }}">
+            <i class="globe icon"></i> My Categories
+          </a>
+          <a class="item" href="{{ url_for('showUserCollection', user_id = session['user_id']) }}">
+            <i class="settings icon"></i> My Collections
+          </a>
+          <a class="item" href="{{ url_for('showUser', user_id = session['user_id']) }}">
+            <i class="user icon"></i> User
+          </a>
+        </div>
+      </div>
+      <a class="item" href="{{ url_for('disconnect') }}"><i class="power icon"></i> <span class="menuicon">Logout</span></a>
+{% endif %}
+    </div>
+  </div>
+
+
+  <div class="ui flowing basic admission popup">
+
+{% if not session['user_id'] %}
+
+    <div class="ui one column relaxed divided grid">
+      <div class="column">
+        <div class="ui link list">
+          <a class="item" href="{{ url_for('showCollections') }}">Collections &nbsp;</a>
+          <a class="item" href="{{ url_for('showCategories') }}">Categories &nbsp;</a>
+          <a class="item" href="{{ url_for('showItems') }}">Items &nbsp;</a>
+        </div>
+      </div>
+    </div>
+
+{% else %}
+
+    <div class="ui three column relaxed divided grid">
+
+  {% if menu_collections %}
+      <div class="column">
+        <h4 class="ui header">Collections</h4>
+        <div class="ui link list">
+    {% for collection in menu_collections[:nav_dropdown_max] %}
+      {% if not (collection.name.startswith('_')) or session['group'] == 'admin' %}
+          <a class="item" href="{{ url_for('showCollection', collection_id = collection.id) }}" alt="{{ collection.name }}">{{ collection.name[:nav_dropdown_maxchars] }}</a>
+      {% endif %}
+    {% endfor %}
+          <a class="item" href="{{ url_for('showCollections') }}">More ...</a>
+        </div>
+      </div>
+  {% endif %}
+
+  {% if menu_categories %}
+      <div class="column">
+        <h4 class="ui header">Categories</h4>
+        <div class="ui link list">
+    {% for category in menu_categories[:nav_dropdown_max] %}
+          <a class="item" href="{{ url_for('showCategory', category_id = category.id) }}" alt="{{ category.name }}">{{ category.name[:nav_dropdown_maxchars] }}</a>
+    {% endfor %}
+          <a class="item" href="{{ url_for('showCategories') }}">More ...</a>
+        </div>
+      </div>
+  {% endif %}
+
+  {% if menu_items %}
+      <div class="column">
+        <h4 class="ui header">Latest Items</h4>
+        <div class="ui link list">
+    {% for item in menu_items[:nav_dropdown_max] %}
+          <a class="item" href="{{ url_for('showItem', item_id = item.id) }}" alt="{{ item.name }}">{{ item.name[:nav_dropdown_maxchars] }}</a>
+    {% endfor %}
+          <a class="item" href="{{ url_for('showItems') }}">More ...</a>
+        </div>
+      </div>
+  {% endif %}
+
+    </div>  
+{% endif %}
+
+
+  </div>
+</nav>

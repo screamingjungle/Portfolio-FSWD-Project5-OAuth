@@ -1,0 +1,51 @@
+body{
+  padding: 2em;
+}
+
+#main-container {
+    margin-top: 4%;
+}
+
+.ui.card {
+    word-wrap: break-word;
+}
+
+.ui.link.list a.item:hover {
+  color:#000 !important;
+}
+
+.cancel {
+    color: #db0202;
+    border: 1px solid #db0202;
+    border-radius: 4px;
+    padding: 8px 17px;
+}
+
+a.cancel:hover {
+    text-decoration: none;
+    color: #db0202;
+}
+
+@media screen and (max-width:600px) {
+    #main-container {
+        margin-top: 10%;
+    }
+}
+
+/* fix for semantic inverted menu bug */
+.ui.inverted.menu .dropdown.item:hover, .ui.inverted.menu .link.item:hover, .ui.inverted.menu a.item:hover, .ui.link.inverted.menu .item:hover {
+    color: inherit;
+}
+
+figure.creator img{
+  block-size: 175px;
+}
+
+@media only screen and (max-width: 991px) {
+  nav .item .menuicon {
+    display: none;
+  }
+/*  nav ui.container {
+    width: 100%;
+  }*/
+}

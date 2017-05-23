@@ -1,0 +1,37 @@
+{% if not description_maxchars %}
+  {% set description_maxchars = 65 %}
+{% endif %}
+
+<div class="card">
+{% if collection.image_url %}
+      <a class="image" href="{{url_for('showCollection', collection_id=collection.id)}}">
+        <img src="{{ request.script_root + collection.image_url }}">
+      </a>
+{% endif %}
+      <a class="content" href="{{url_for('showCollection', collection_id=collection.id)}}">
+        <div class="header">{{collection.name}}</div>
+        <div class="meta">
+          number of items/categories in collection
+        </div>
+        <div class="description">
+          {{collection.description[:description_maxchars]}}...
+        </div>
+      </a>
+{% if collection.user_id == session['user_id'] or session['group'] == 'admin' %}
+      <div class="extra content">
+        <span class="left floated">
+          <a href="{{ url_for('editCollection', collection_id=collection.id ) }}">
+            <i class="edit icon"></i>
+            Edit
+          </a>
+        </span>
+        <span class="right floated">
+          <a href="{{ url_for('deleteCollection', collection_id=collection.id ) }}">
+            <i class="delete icon"></i>
+            Delete
+          </a>
+        </span>
+      </div>
+{% endif %}
+  </div>
+

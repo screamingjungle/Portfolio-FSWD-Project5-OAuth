@@ -1,0 +1,10 @@
+{% extends "_base.html" %} {% block content %}
+<h2> Are you sure you want to delete {{item.name}}? </h2>
+
+<form class="ui form" method='post'>
+    <button class="ui green basic button" type="submit">Delete</button>
+    <a class="cancel" href="{{url_for('showItem', item_id=item.id)}}">Cancel</a>
+    <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+</form>
+
+{% endblock %}

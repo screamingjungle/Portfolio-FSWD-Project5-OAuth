@@ -1,0 +1,30 @@
+{% extends "_base.html" %} {% block content %}
+
+<h2> Are you sure you want to delete {{collection.name}}? </h2>
+
+<form class="ui form" method='post'>
+
+  <div class="ui stackable one column grid">
+    <div class="column">
+{% if collection.id > 1 %}
+      <div class="ui checkbox">
+        <input name="all" type="checkbox">
+        <label>Delete all Items linked to Collection?</label>
+      </div>
+{% else %}
+        <label>All Orphaned items will be deleted.</label>
+{% endif %}
+    </div>
+    <div class="column">
+      <button class="ui green basic button" type="submit">Delete</button>
+
+      <a class="cancel" href="{{url_for('showCollection', collection_id=collection.id)}}">Cancel</a>
+    {% if params.error_submit %}
+        <div class="ui red pointing label">{{params.error_submit}}</div>
+    {% endif %}
+      <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+    </div>
+  </div>
+
+</form>
+{% endblock %}

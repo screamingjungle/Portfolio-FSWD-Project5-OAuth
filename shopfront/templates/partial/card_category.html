@@ -1,0 +1,37 @@
+{% if not description_maxchars %}
+  {% set description_maxchars = 65 %}
+{% endif %}
+
+<div class="card">
+{% if category.image_url %}
+      <a class="image" href="{{url_for('showCategory', category_id=category.id)}}">
+        <img src="{{ request.script_root + category.image_url }}">
+      </a>
+{% endif %}
+      <a class="content" href="{{url_for('showCategory', category_id=category.id)}}">
+        <div class="header">{{category.name}}</div>
+        <div class="meta">
+          number of items in category
+        </div>
+        <div class="description">
+          {{category.description[:description_maxchars]}}...
+        </div>
+      </a>
+{% if category.user_id == session['user_id'] or session['group'] == 'admin' %}
+      <div class="extra content">
+        <span class="left floated">
+          <a href="{{ url_for('editCategory', category_id=category.id ) }}">
+            <i class="edit icon"></i>
+            Edit
+          </a>
+        </span>
+        <span class="right floated">
+          <a href="{{ url_for('deleteCategory', category_id=category.id ) }}">
+            <i class="delete icon"></i>
+            Delete
+          </a>
+        </span>
+      </div>
+{% endif %}
+  </div>
+

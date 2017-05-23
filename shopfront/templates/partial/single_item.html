@@ -1,0 +1,88 @@
+  <div class="item">
+{% if item.image_url %}
+    <a class="image" href="{{url_for('showItem', collection_id=item.collection_id, item_id=item.id)}}">
+      <img src="{{ request.script_root + item.image_url }}" alt="Image of {{ item.name }}">
+    </a>
+{% endif %}
+    <div class="content">
+      <h1 class="header">
+        <a href="{{url_for('showItem', collection_id=item.collection_id, item_id=item.id)}}">
+          {{item.name}}
+        </a>
+      </h1>
+      <div class="meta">
+        <span>
+          {{item.currency}} {{item.price}}
+        </span>
+        <span class="right floated">
+{% if item.quantity > 0 %}
+          <span class="ui teal label">In stock: {{item.quantity}}</span>
+{% else %}
+          <span class="ui red label">Out of Stock
+  {% if item.user_id == session['user_id'] or session['group'] == 'admin' %}
+     : {{item.quantity}}
+  {% endif %}
+          </span>
+{% endif %}
+        </span>
+      </div>
+      <div class="description">
+        <p>{{item.description}}</p>
+        <p>by: <a href="{{ url_for('showUser', user_id=item.user_id) }}">{{item.usr.name}}</a> 
+          on {{item.updated}}{# .strftime('%Y-%m-%d %H.%m.%s') #}</p>
+      </div>
+      <div class="extra">
+
+{% for tag in item.tags.split(',') %}
+        <div class="ui label">
+          <a href="{{ url_for('showTag', tag=tag) }}">
+            {{ tag.strip( '_' ) | safe }}
+          </a>
+        </div>
+{% endfor %}
+
+{% if item.category_id > 0 %}
+        <div class="ui label">
+          <a href="{{ url_for('showCategory', category_id=item.category_id) }}">
+            <i class="globe icon"></i> {{ item.cat.name }}
+          </a>
+        </div>
+{% endif %}
+
+{% if item.collection_id > 1 %}
+        <div class="ui label">
+          <a href="{{ url_for('showCollection', collection_id=item.collection_id) }}">
+            <i class="share alternate icon"></i> {{ item.coll.name }}
+          </a>
+        </div>
+{% endif %}
+      </div>
+
+{% if item.user_id == session['user_id'] or session['group'] == 'admin' %}
+      <div class="extra">
+
+  {% if session['group'] == 'admin' or session['group'] == 'standard' %}
+            <a href="{{ url_for('editItem', item_id=item.id) }}">
+                <div class="ui basic yellow button">
+                    Edit Item
+                </div>
+            </a>
+            <a href="{{ url_for('deleteItem', item_id=item.id ) }}">
+                <div class="ui basic red button">
+                    Delete Item
+                </div>
+            </a>
+  {% if params.error_deletion %}
+      <div class="ui red pointing label">{{params.error_deletion}}</div>
+  {% endif %}
+
+  {% else %}
+          Locked
+  {% endif %}
+
+      </div>
+{% endif %}
+
+
+    </div>
+  </div>

@@ -1,0 +1,52 @@
+{% extends "_base.html" %}
+{% block title %}{{ "User Management" | title }}{% endblock %}
+{% block content %}
+
+<h1 class="ui header">User Management</h1>
+
+{# If there are users to manage, display form. #}
+{% if users %}
+<div class="container" id="form-container">
+  <form class="ui form" action="{{ url_for('user_management') }}" method="POST">
+    {% for user in users %}
+    <div class="field">
+      <label for="{{ user.id }}">{{ user.email }}</label>
+      <select class="text-field" id="{{ user.id }}" name="{{ user.email }}">
+        <option value="readonly"
+          {{ "selected" if user.group == 'readonly' }}>
+          Read-Only
+        </option>
+        <option value="standard"
+          {{ "selected" if user.group == 'standard' }}>
+          Standard
+        </option>
+        <option value="admin"
+          {{ "selected" if user.group == 'admin' }}>
+          Administrator
+        </option>
+      {% if user.group != 'admin' %}
+        <option value="disabled"
+          {{ "selected" if user.group == 'disabled' }}>
+          Disabled
+        </option>
+      {% endif %}
+      </select>
+
+    </div>
+
+    {% endfor %}
+
+    {% if params.submit %}
+    <p>{{params.submit}}</p>
+    {% endif %}
+    <div class="form-button-container">
+      <input class="button" type="submit" value="Save">
+    </div>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+  </form>
+</div>
+{% else %}
+<p class="no-items">No users to display.</p>
+{% endif %}
+
+{% endblock %}

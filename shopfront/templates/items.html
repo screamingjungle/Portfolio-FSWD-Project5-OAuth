@@ -1,0 +1,30 @@
+{% extends "_base.html" %}
+{% block content %}
+
+{% set description_maxchars = MAX_ITEM_DESCRIPTION_CHARS %}
+{% set uid = None %}
+
+<div class="ui vertical masthead center aligned segment">
+  <h1 class="ui header">
+    Items
+{% if params.tag %}
+    with tag: {{params.tag}}
+{% endif %}
+  </h1>
+{% if creator %}
+  {% set uid = creator.id %}
+  <h3>{% include 'partial/figure_creator_picture.html' %}</h3>
+{% endif %}
+</div>
+
+{% if session['group'] == "standard" and session['user_id'] == uid %}
+  <div class="ui center aligned header">
+    <a class="ui basic green button" href="{{ url_for('addItem', user_id=uid) }}">
+        Add Item
+    </a>
+  </div>
+{% endif %}
+
+{% include 'partial/listview_items.html' %}
+
+{% endblock %}

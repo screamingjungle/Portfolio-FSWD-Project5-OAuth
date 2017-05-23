@@ -1,0 +1,15 @@
+.DS_Store
+*.old
+*.orig
+*.pyc
+*.db-journal
+*.vscode
+*.vagrant
+*secrets.json
+todo.md
+todo.txt
+book*
+*.log
+*.db
+*.bak
+*.tmp

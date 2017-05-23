@@ -1,0 +1,28 @@
+{% extends "_base.html" %}
+{% block content %}
+
+{% set creator=collection.usr %}
+
+<div class="ui vertical masthead center aligned segment">
+  <h1 class="ui header">{{ collection.name }}</h1>
+  <h2>{{ collection.description }}</h2>
+  <h3>{% include 'partial/figure_creator_picture.html' %}</h3>
+</div>
+
+{% if collection.user_id == session['user_id'] or session['group'] == 'admin' %}
+<div class="ui center aligned header">
+  <a class="ui basic green button" href=" url_for('newItem', collection_id=collection.id) ">
+    Add Item
+  </a>
+  <a class="ui basic yellow button" href="{{ url_for('editCollection', collection_id=collection.id ) }}">
+    Edit Collection
+  </a>
+  <a class="ui basic red button" href="{{ url_for('deleteCollection', collection_id=collection.id ) }}">
+    Delete Collection
+  </a>
+</div>
+{% endif %}
+
+{% include 'partial/listview_items.html' %}
+
+{% endblock %}

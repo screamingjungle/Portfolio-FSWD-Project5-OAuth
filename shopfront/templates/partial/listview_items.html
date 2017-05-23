@@ -1,0 +1,23 @@
+{% if items %}
+  {% if listview %}
+  <div class="ui vertical right aligned segment">
+    <a href="?gridview=1"><i class="grid layout icon"></i></a>
+  </div>
+  <div class="ui divided items">
+    {% for item in items %}
+      {% include 'partial/single_item.html' %}
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="ui vertical right aligned segment">
+    <a href="?listview=1"><i class="list layout icon"></i></a>
+  </div>
+  <div class="ui link cards stackable four column grid">
+    {% if items %}
+      {% for item in items %}
+        {% include 'partial/card_item.html' %}
+      {% endfor %}
+    {% endif %}
+  </div>
+  {% endif %}
+{% endif %}

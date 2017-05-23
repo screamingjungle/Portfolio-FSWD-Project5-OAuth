@@ -1,0 +1,103 @@
+{% extends "_base.html" %}
+{% block content %}
+
+<h1 class="ui header">
+  {% if item.id %} Edit {% else %} Create {% endif %} Item
+</h1>
+
+<form class="ui form" method="post">
+  <div class="field">
+
+    <label for="name">Name</label>
+    <input type="text" maxlength="100" name="name" value="{{item.name or ''}}" required>
+{% if params.error_name %}
+    <div class="ui red pointing label">{{params.error_name}}</div>
+{% endif %}
+
+  </div>
+  <div class="field">
+
+    <label for="description">Description</label>
+    <textarea class="form-control" maxlength="250" rows="3" name="description">{{item.description or ''}}</textarea>
+{% if params.error_description %}
+    <div class="ui red pointing label">{{params.error_description}}</div>
+{% endif %}
+
+  </div>
+  <div class="inline field">
+
+    <label for="price">Price</label>
+    <input type="text" maxlength="10" name="price" placeholder="Price" value="{{item.price or '0'}}">
+{% if params.error_price %}
+    <div class="ui red left pointing label">{{params.error_price}}</div>
+{% endif %}
+
+  </div>
+  <div class="two fields">
+
+    <div class="field">
+      <label>
+        {% if item.collection_id %} Collection
+        {% else %} No Collection selected {% endif %}
+      </label>
+{% if collections %}
+      <select class="ui fluid dropdown" name="collection_id">
+        <option value="">Collection</option>
+  {% for collection in collections %}
+        <option value="{{collection.id}}" {% if item.collection_id == collection.id %} selected {% endif %}>{{collection.name}}</option>
+  {% endfor %}
+      </select>
+{% else %}
+      <a class="ui green basic button" href="{{ url_for('addCollection', user_id = session['user_id']) }}">create a new Collection</a>
+{% endif %}
+    </div>
+
+    <div class="field">
+      <label>
+        {% if item.category_id %} Category
+        {% else %} No Category selected {% endif %}
+      </label>
+
+{% if categories %}
+      <select class="ui fluid dropdown" name="category_id">
+        <option value="">Category</option>
+  {% for category in categories %}
+        <option value="{{category.id}}" {% if item.category_id == category.id %} selected {% endif %}>{{category.name}}</option>
+  {% endfor %}
+      </select>
+{% else %}
+      <a class="ui orange basic button" href="{{ url_for('addCategory', user_id = session['user_id']) }}">create a new Category</a>
+{% endif %}
+    </div>
+
+  </div>
+  <div class="field">
+
+    <label for="tags">Tags</label>
+    <input type="text" maxlength="254" name="tags" placeholder="Tags" value="{{item.tags or ''}}">
+{% if params.error_tags %}
+    <div class="ui red pointing label">{{params.error_tags}}</div>
+{% endif %}
+
+  </div>
+  <div class="field">
+
+    <button class="ui green basic button" type="submit">Save</button>
+{% if params.error_submit %}
+    <div class="ui red pointing label">{{params.error_submit}}</div>
+{% endif %}
+
+{% if item.id %}
+    <a class="cancel" href="{{url_for('showItem', item_id=item.id)}}">Cancel</a>
+{% else %}
+    <a class="cancel" href="{{url_for('showItems', user_id=uid)}}">Cancel</a>
+{% endif %}
+
+  </div>
+
+    <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+  </div>
+</form>
+
+
+{% endblock %}

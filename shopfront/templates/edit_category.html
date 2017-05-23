@@ -1,0 +1,52 @@
+{% extends "_base.html" %}
+{% block content %}
+
+{% set uid = None %}
+
+{% if creator %}
+  {% set uid = creator.id %}
+{% endif %}
+
+<h1 class="ui header">
+{% if category.name %} Edit Category {{category.name}}
+{% else %} Add new category
+{% endif %}
+</h1>
+
+<form class="ui form" method="post">
+  <div class="field">
+
+    <label for="name">Name</label>
+    <input type="text" maxlength="100" name="name" value="{{category.name or ''}}">
+{% if params.error_name %}
+    <div class="ui red pointing label">{{params.error_name}}</div>
+{% endif %}
+
+  </div>
+  <div class="field">
+
+    <label for="description">Description</label>
+    <textarea class="form-control" maxlength="250" rows="3" name="description">{{category.description or ''}}</textarea>
+{% if params.error_description %}
+    <div class="ui red pointing label">{{params.error_description}}</div>
+{% endif %}
+
+  </div>
+  <div class="field">
+
+    <button class="ui green basic button" type="submit">Save</button>
+{% if params.error_submit %}
+    <div class="ui red pointing label">{{params.error_submit}}</div>
+{% endif %}
+
+{% if category.id %}
+    <a class="cancel" href="{{url_for('showCategory', category_id=category.id)}}">Cancel</a>
+{% else %}
+    <a class="cancel" href="{{url_for('showCategories', user_id=uid)}}">Cancel</a>
+{% endif %}
+
+  </div>
+
+  <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+</form>
+{% endblock %}

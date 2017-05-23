@@ -1,0 +1,52 @@
+{% extends "_base.html" %}
+{% block content %}
+
+{% set uid = None %}
+
+{% if creator %}
+  {% set uid = creator.id %}
+{% endif %}
+
+<h1 class="ui header">
+{% if collection.id %} Edit Collection {{collection.name}}
+{% else %} Add new collection
+{% endif %}
+</h1>
+
+<form class="ui form" method="post">
+  <div class="field">
+
+    <label for="name">Name</label>
+    <input type="text" maxlength="100" name="name" value="{{collection.name or ''}}">
+{% if params.error_name %}
+    <div class="ui red pointing label">{{params.error_name}}</div>
+{% endif %}
+
+  </div>
+  <div class="field">
+
+    <label for="description">Description</label>
+    <textarea class="form-control" maxlength="250" rows="3" name="description">{{collection.description or ''}}</textarea>
+{% if params.error_description %}
+    <div class="ui red pointing label">{{params.error_description}}</div>
+{% endif %}
+
+  </div>
+  <div class="field">
+
+    <button class="ui green basic button" type="submit">Save</button>
+{% if params.error_submit %}
+    <div class="ui red pointing label">{{params.error_submit}}</div>
+{% endif %}
+
+{% if collection.id %}
+    <a class="cancel" href="{{url_for('showCollection', collection_id=collection.id)}}">Cancel</a>
+{% else %}
+    <a class="cancel" href="{{url_for('showCollections', user_id=uid)}}">Cancel</a>
+{% endif %}
+
+  </div>
+
+  <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
+</form>
+{% endblock %}
