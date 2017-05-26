@@ -174,7 +174,7 @@ def fbconnect():
         return response
     access_token = request.data.decode('utf-8')
 
-    url = ('https://graph.facebook.com/v2.8/oauth/access_token?'
+    url = ('https://graph.facebook.com/v2.9/oauth/access_token?'
         'grant_type=fb_exchange_token&client_id=%s&client_secret=%s'
         '&fb_exchange_token=%s') % (FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, 
         access_token)
@@ -188,11 +188,11 @@ def fbconnect():
         flash('Facebook Login OAuth Failed!')
         return redirect(url_for('showLogin'))
 
-    # userinfo_url = "https://graph.facebook.com/v2.8/me"
+    # userinfo_url = "https://graph.facebook.com/v2.9/me"
     token = 'access_token=' + data['access_token']
     fb_fields = 'name,id,email,picture.type(large)'
 
-    url = 'https://graph.facebook.com/v2.8/me?%s&fields=%s' % (token, fb_fields)
+    url = 'https://graph.facebook.com/v2.9/me?%s&fields=%s' % (token, fb_fields)
 
     h = httplib2.Http()
     content = h.request(url, 'GET')[1]
