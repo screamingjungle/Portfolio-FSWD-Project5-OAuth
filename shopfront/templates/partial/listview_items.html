@@ -5,7 +5,12 @@
   </div>
   <div class="ui divided items">
     {% for item in items %}
-      {% include 'partial/single_item.html' %}
+      {% if ( session['group'] == 'admin' or item.category_id > 1 ) and 
+            ( item.user_id == session['user_id'] or session['group'] == 'admin' 
+              or item.collection_id > 1 )
+      %}
+        {% include 'partial/single_item.html' %}
+      {% endif %}
     {% endfor %}
   </div>
   {% else %}
@@ -13,11 +18,14 @@
     <a href="?listview=1"><i class="list layout icon"></i></a>
   </div>
   <div class="ui link cards stackable four column grid">
-    {% if items %}
-      {% for item in items %}
+    {% for item in items %}
+      {% if ( session['group'] == 'admin' or item.category_id > 1 ) and 
+            ( item.user_id == session['user_id'] or session['group'] == 'admin' 
+              or item.collection_id > 1 )
+      %}
         {% include 'partial/card_item.html' %}
-      {% endfor %}
-    {% endif %}
+      {% endif %}
+    {% endfor %}
   </div>
   {% endif %}
 {% endif %}

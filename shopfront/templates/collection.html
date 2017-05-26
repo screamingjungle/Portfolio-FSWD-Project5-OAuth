@@ -11,7 +11,7 @@
 
 {% if collection.user_id == session['user_id'] or session['group'] == 'admin' %}
 <div class="ui center aligned header">
-  <a class="ui basic green button" href=" url_for('newItem', collection_id=collection.id) ">
+  <a class="ui basic green button" href="{{ url_for('addItem', collection_id=collection.id) }}">
     Add Item
   </a>
   <a class="ui basic yellow button" href="{{ url_for('editCollection', collection_id=collection.id ) }}">

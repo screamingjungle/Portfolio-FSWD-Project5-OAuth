@@ -39,6 +39,12 @@ def showUserCategory(user_id, category_id=None, **kwargs):
     """
     Show the user categories.
     """
+    if category_id == 1:
+        return showItems(
+            user_id=user_id, 
+            category_id=category_id,
+            **kwargs)
+
     if category_id:
         return showCategory(
             user_id=user_id, 
@@ -53,11 +59,18 @@ def showUserCollection(user_id, collection_id=None, **kwargs):
     """
     Show the user collections.
     """
+    if collection_id == 1:
+        return showItems(
+            user_id=user_id, 
+            collection_id=collection_id,
+            **kwargs)
+
     if collection_id:
         return showCollection(
             user_id=user_id, 
             collection_id=collection_id, 
             **kwargs)
+
     return showCollections(user_id=user_id, **kwargs)
 
 @app.route('/user/new', methods=['GET', 'POST'])

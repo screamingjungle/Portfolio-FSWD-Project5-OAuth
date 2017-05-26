@@ -8,27 +8,40 @@
   <h1 class="ui header">
     Messages
   </h1>
-{% if creator %}
-  {% set uid = creator.id %}
-  <h3>{% include 'partial/figure_creator_picture.html' %}</h3>
-{% endif %}
 </div>
-
-{% if session['group'] == "standard" and session['user_id'] == uid %}
-  <div class="ui center aligned header">
-    <a class="ui basic green button" href="{{ url_for('addItem', user_id=uid) }}">
-        Add item
-    </a>
-  </div>
-{% endif %}
 
 {% if messages %}
 
-  <ul>
+  <div class="ui list">
   {% for message in messages %}
-    <li>{{ message }} : {{ messages[message] }}</li>
+
+    {% if message == 'total_items' %}
+
+      <a class="item" href="{{ url_for('showUserItem', user_id = session['user_id']) }}">
+        <i class="edit icon"></i>
+        Total Items : {{ messages[message] }}
+      </a>
+
+    {% elif message == 'uncol_items' %}
+
+      <a class="item" href="{{ url_for('showUserCollection', user_id = session['user_id'], collection_id = 1) }}">
+        <i class="edit icon"></i>
+        Items without a Collection : {{ messages[message] }}
+      </a>
+
+    {% elif message == 'uncat_items' %}
+
+
+      <a class="item" href="{{ url_for('showUserCategory', user_id = session['user_id'], category_id = 1) }}">
+        <i class="edit icon"></i>
+        Items without a Category : {{ messages[message] }}
+      </a>
+
+    {% else %}
+    <div class="item">{{ message }} : {{ messages[message] }}</div>
+    {% endif %}
   {% endfor %}
-  </ul>
+  </div>
 
 {% else %}
 

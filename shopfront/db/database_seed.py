@@ -37,9 +37,9 @@ def db_seed():
         {
             'id': 1,
             'user_id': 1,
-            'seo_url': '0-orphaned-collection',
+            'seo_url': '1-orphaned-collection',
             'description': 'orphans',
-            'name': 'Orphaned Collection',
+            'name': '_Orphaned_Collection',
             'enabled': False,
         },
         {
@@ -47,7 +47,7 @@ def db_seed():
             'user_id': 1,
             'seo_url': '2-archived-collections',
             'description': 'non active',
-            'name': '_Archived',
+            'name': '_Archived_Collection',
             'enabled': False,
         },
         {
@@ -82,13 +82,21 @@ def db_seed():
         {
             'id': 1,
             'user_id': 1,
+            'seo_url': '1-orphaned-category',
+            'description': 'orphans',
+            'name': '_Orphaned_Category',
+            'enabled': False,
+        },
+        {
+            'id': 2,
+            'user_id': 1,
             'seo_url': '1-guitars',
             'description': 'guitars',
             'name': 'Guitars',
             'enabled': True,
         },
         {
-            'id': 2,
+            'id': 3,
             'user_id': 1,
             'seo_url': '2-bass',
             'description': 'guitars',
@@ -96,7 +104,7 @@ def db_seed():
             'enabled': True,
         },
         {
-            'id': 3,
+            'id': 4,
             'user_id': 1,
             'seo_url': '3-amplifiers-effects',
             'description': 'guitars',
@@ -104,7 +112,7 @@ def db_seed():
             'enabled': True,
         },
         {
-            'id': 4,
+            'id': 5,
             'user_id': 1,
             'seo_url': '4-drums-percussion',
             'description': 'guitars',
@@ -112,7 +120,7 @@ def db_seed():
             'enabled': True,
         },
         {
-            'id': 5,
+            'id': 6,
             'user_id': 1,
             'seo_url': '5-live-sound',
             'description': 'guitars',
@@ -120,7 +128,7 @@ def db_seed():
             'enabled': True,
         },
         {
-            'id': 6,
+            'id': 7,
             'user_id': 1,
             'seo_url': '6-recording-gear',
             'description': 'guitars',
@@ -128,7 +136,7 @@ def db_seed():
             'enabled': False,
         },
         {
-            'id': 7,
+            'id': 8,
             'user_id': 2,
             'seo_url': '7-accessories',
             'description': 'guitars',
@@ -381,7 +389,7 @@ def db_seed():
         },
         {
             "collection_id": 3,
-            "category_id": 1,
+            "category_id": 8,
             "description": "The easy-to-afford dreadnought Epiphone PR-150 is the perfect instrument to get started on. It has classic looks, great tone, and is made to be road tough. Like all worthy acoustic guitars, it begins and ends with tonewoods, and the PR-150 Epiphone chose a select spruce top and mahogany body for a classic sound that's balanced, clear, and will only get better with age and lots of playing. The rosewood bridge and synthetic bone saddle are a perfect match for the resonant profile of the select spruce top. The vintage-style soundhole is supported by a tortoiseshell-style pickguard with the '60s era \"E\" logo. The SlipTaper 25.5\" scale mahogany neck has a rosewood fingerboard with dot inlays, a 12\" radius, a 1.68\" nut, premium die-cast 14:1 tuners, and the classic '60s era Sloped Dovewing headstock. The Epiphone's all-nickel hardware will last as long as you play the guitar and the PR-150 comes in two color finishes, Natural (NA) and Vintage Sunburst (VS). Choose the finish you want in the drop down menu above.",
             "id": 17,
             "seo_url": "epiphone-pr-150-acoustic-guitar",
@@ -396,7 +404,7 @@ def db_seed():
         },
         {
             "collection_id": 3,
-            "category_id": 1,
+            "category_id": 8,
             "description": "To honor the 60th anniversary of the Stratocaster in 2014, Fender introduces brilliant new limited-edition looks for the venerable American Standard Stratocaster Vintage White with a tortoiseshell pickguard and rosewood fingerboard. All the acclaimed features, sound and style of the archetypal American Standard Stratocaster, now in an even more beautiful finish.",
             "id": 18,
             "seo_url": "fender-limited-edition-american-standard-stratocaster-rosewood-fingerboard-electric-guitar",
@@ -411,7 +419,7 @@ def db_seed():
         },
         {
             "collection_id": 3,
-            "category_id": 1,
+            "category_id": 8,
             "description": "The Gibson 2015 Les Paul Traditional Electric Guitar combines classic features from the '50s along with some key updates for 2015. The mahogany body is unrouted for improved sustain and has a figured maple top in a choice of delicious colors. Highlights include a late '50s contour mahogany neck, bound rosewood fingerboard, '59 Tribute humbuckers with orange drop capacitors, and a gloss lacquer body finish. Includes hardshell case.",
             "id": 19,
             "seo_url": "gibson-2015-les-paul-traditional-electric-guitar",
@@ -425,7 +433,7 @@ def db_seed():
             'enabled': True,
         },
         {
-            "collection_id": 3,
+            "collection_id": 1,
             "category_id": 1,
             "description": "Dual humbuckers and a semi-hollow ash body provide distinctive sound and personality. Squier's Vintage Modified '72 Telecaster Thinline evokes the popular second incarnation of that era's stylishly enlightened Tele model. The original late-'60s version, with its two single-coil pickups, was updated in 1972 with two great-big, great-sounding Wide Range humbucking pickups for an even more distinctive sound and personality, and that's exactly what Squier gives you here, along with a gorgeous semi-hollow ash body and white pearloid pickguard, smooth-playing maple neck and fingerboard, six-saddle string-through-body bridge and much more.",
             "id": 20,

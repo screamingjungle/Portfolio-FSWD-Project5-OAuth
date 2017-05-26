@@ -154,6 +154,7 @@ def isAdmin(**kwargs):
             return True
     return False
 
+
 def userItemCount(**kwargs):
 
     user_id = session['user_id']
@@ -164,10 +165,10 @@ def userItemCount(**kwargs):
     item = db_session.query(
         func.count(Item.id).label("total_items"),
         func.count(
-            case([((Item.category_id == None), Item.id)], else_=literal_column("NULL")))
+            case([((Item.category_id <= 1), Item.id)], else_=literal_column("NULL")))
             .label('uncat_items'),
         func.count(
-            case([((Item.collection_id == None), Item.id)], else_=literal_column("NULL")))
+            case([((Item.collection_id <= 1), Item.id)], else_=literal_column("NULL")))
             .label('uncol_items')
     )
     if 'category_id' in kwargs:
@@ -249,9 +250,9 @@ def itemSearch(search_term, **kwargs):
             item = item.order_by(desc(order_field))
 
         if 'limit' in kwargs:
-            item = item.limit(int(kwargs['limit']))
+            item = item.limit(kwargs['limit'])
         else:
-            item = item.limit(int(app.config['PAGE_LIMIT']))
+            item = item.limit(app.config['PAGE_LIMIT'])
 
         res = item.all()
 
@@ -298,9 +299,9 @@ def itemGet(item_id=None, **kwargs):
         else:
             item = item.order_by(desc(Item.updated))
             if 'limit' in kwargs:
-                item = item.limit(int(kwargs['limit']))
+                item = item.limit(kwargs['limit'])
             #else:
-            #  item = item.limit(int(app.config['PAGE_LIMIT']))
+            #  item = item.limit(app.config['PAGE_LIMIT'])
             res = item.all()
 
         db_session.close()
@@ -313,6 +314,14 @@ def itemSet(item):
     Returns False is Item was not updated.
     """
     try:
+        # orphan unknown relationships
+        if not item.user_id:
+            item.user_id = 1
+        if not item.collection_id:
+            item.collection_id = 1
+        if not item.category_id:
+            item.category_id = 1
+
         db_session = connect_to_database()
         db_session.add(item)
         db_session.flush()
@@ -359,7 +368,7 @@ def categoryGet(category_id=None, **kwargs):
         else:
             category = category.order_by(Category.name)
             if 'limit' in kwargs:
-                category = category.limit(int(kwargs['limit']))
+                category = category.limit(kwargs['limit'])
             res = category.all()
         db_session.close()
         return res
@@ -418,7 +427,7 @@ def collectionGet(collection_id=None, **kwargs):
         else:
             collection = collection.order_by(Collection.name)
             if 'limit' in kwargs:
-                collection = collection.limit(int(kwargs['limit']))
+                collection = collection.limit(kwargs['limit'])
             res = collection.all()
         db_session.close()
         return res
@@ -566,14 +575,17 @@ def clean_tags(kw_str=None, return_list=False):
     #q.filter("tags", self.clean_tags(tag, True))
 
 def slugify(text):
-    punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
+    punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.:]+')
     delim = u'-'
     result = []
     for word in punct_re.split(text.lower()):
         word = normalize('NFKD', word).encode('ascii', 'ignore')
+        word = word.decode('utf-8')
         if word:
             result.append(word)
-    return unicode(delim.join(result))
+
+    #return unicode(delim.join(result))
+    return delim.join(result)
 
 
 def get_nonce():

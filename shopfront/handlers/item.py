@@ -66,6 +66,8 @@ def showItems(**kwargs):
 def addItem(**kwargs):
     """
     Allows the creator to add an item to the database
+
+    TODO: add picture(s)
     """
     return editItem(**kwargs)
 

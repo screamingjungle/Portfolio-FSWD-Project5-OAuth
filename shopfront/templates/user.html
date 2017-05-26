@@ -5,7 +5,7 @@
 {% set uid = None %}
 {% set creator = user %}
 
-<p>TODO: show collection and categories</p>
+{# TODO: show collection and categories #}
 
 <div class="ui vertical masthead center aligned segment">
   <h1 class="ui header">
@@ -26,9 +26,11 @@
     <a class="ui basic yellow button" href="{{ url_for('editUser', user_id=user.id ) }}">
         Edit User
     </a>
-    <a class="ui basic red button" href=" url_for('deleteUser', user_id=user.id ) ">
+<!--
+    <a class="ui basic red button" href="{# url_for('deleteUser', user_id=user.id ) #}">
         Delete User
     </a>
+-->
 {% endif %}
 </h1>
 

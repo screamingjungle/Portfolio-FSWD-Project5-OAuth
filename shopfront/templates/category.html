@@ -11,7 +11,7 @@
 
 {% if category.usr.id == session['user_id'] or session['group'] == 'admin' %}
 <div class="ui center aligned header">
-  <a class="ui basic green button" href=" url_for('newItem', category_id=category.id) ">
+  <a class="ui basic green button" href="{{ url_for('addItem', category_id=category.id) }}">
     Add Item
   </a>
 

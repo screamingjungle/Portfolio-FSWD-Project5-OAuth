@@ -22,7 +22,10 @@
 
 <div class="ui link cards stackable four column grid">
 {% for category in categories %}
-  {% include 'partial/card_category.html' %}
+
+  {% if session['group'] == 'admin' or category.id > 1 %}
+    {% include 'partial/card_category.html' %}
+  {% endif %}
 {% endfor %}
 </div>
 

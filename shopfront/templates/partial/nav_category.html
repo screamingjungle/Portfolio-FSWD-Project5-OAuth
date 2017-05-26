@@ -14,28 +14,27 @@
     
       <div class="ui dropdown item">
         <a href="{{ url_for('showMessages', user_id = session['user_id']) }}">
-          <i class="mail icon"></i> {{ session['messages'] or '' }} 
+          <i class="mail icon"></i> {{ (session['messages'] - 1) or '' }} 
           <span class="menuicon">&nbsp;&nbsp;Messages</span> 
-          {% if session['messages'] > 0 %} <i class="icon dropdown"></i> {% endif %}
+          {% if session['messages'] > 1 %} <i class="icon dropdown"></i> {% endif %}
         </a>
-  {% if session['messages'] > 0 %}
         <div class="menu">
+  {% if session['messages'] > 1 %}
     {% if messages %}
       {% for message in messages %}
+        {% if message != 'total_items' %}
           <a class="item" href="{{ url_for('addItem', user_id = session['user_id']) }}">
             <div class="ui label">{{ messages[message] }}</div> {{ message }}
           </a>
+        {% endif %}
       {% endfor %}
-          <a class="item" href="{{ url_for('showMessages', user_id = session['user_id']) }}">
-            <i class="settings icon"></i> See All
-          </a>
-    {% else %}
+    {% endif %}
+  {% endif %}
           <a class="item" href="{{ url_for('showMessages', user_id = session['user_id']) }}">
             <i class="settings icon"></i> Refresh
           </a>
-    {% endif %}
+
         </div>
-  {% endif %}
       </div>
 
 {% endif %}
@@ -148,7 +147,9 @@
         <h4 class="ui header">Categories</h4>
         <div class="ui link list">
     {% for category in menu_categories[:nav_dropdown_max] %}
+      {% if not (category.name.startswith('_')) or session['group'] == 'admin' %}
           <a class="item" href="{{ url_for('showCategory', category_id = category.id) }}" alt="{{ category.name }}">{{ category.name[:nav_dropdown_maxchars] }}</a>
+      {% endif %}
     {% endfor %}
           <a class="item" href="{{ url_for('showCategories') }}">More ...</a>
         </div>

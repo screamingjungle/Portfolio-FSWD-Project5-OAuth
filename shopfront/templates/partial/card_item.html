@@ -8,7 +8,7 @@
         <img src="{{ request.script_root + item.image_url }}">
       </a>
 {% endif %}
-      <a class="content" href="{{url_for('showItem', collection_id=item.collection_id, item_id=item.id)}}">
+      <a class="content" href="{{ url_for('showItem', collection_id=item.collection_id, item_id=item.id) }}">
         <div class="header">{{item.name}}</div>
         <div class="meta">
           {{item.currency}} {{item.price}}
@@ -20,29 +20,9 @@
       </a>
 
       <div class="extra">
-{% for tag in item.tags.split(',') %}
-        <div class="ui label">
-          <a href="{{ url_for('showTag', tag=tag) }}">
-            {{ tag.strip( '_' ) | safe }}
-          </a>
-        </div>
-{% endfor %}
 
-{% if item.category_id > 0 %}
-        <div class="ui label">
-          <a href="{{ url_for('showCategory', category_id=item.category_id) }}">
-            <i class="globe icon"></i> {{ item.cat.name }}
-          </a>
-        </div>
-{% endif %}
+{% include 'partial/item_tags.html' %}
 
-{% if item.collection_id > 1 %}
-        <div class="ui label">
-          <a href="{{ url_for('showCollection', collection_id=item.collection_id) }}">
-            <i class="share alternate icon"></i> {{ item.coll.name }}
-          </a>
-        </div>
-{% endif %}
       </div>
 
 {% if item.user_id == session['user_id'] or session['group'] == 'admin' %}

@@ -8,7 +8,7 @@
                   Home
                 </a>
 {% if 'username' in session %}
-                <a class="item" href=" url_for('newCategory') ">
+                <a class="item" href="{{ url_for('addCategory') }}">
           New category
         </a>
 {% endif %}
