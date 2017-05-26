@@ -581,4 +581,4 @@ def get_nonce():
     Returns a nonce value to be used as an anti-CSRF token.
     """
     return ''.join(random.choice(string.ascii_uppercase + string.digits)
-                   for x in xrange(32))
+                   for x in range(32))

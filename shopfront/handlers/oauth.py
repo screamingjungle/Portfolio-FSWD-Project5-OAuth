@@ -55,24 +55,27 @@ def gconnect():
     access_token = credentials.access_token
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
            % access_token)
+
     h = httplib2.Http()
-    result = json.loads(h.request(url, 'GET')[1])
+    content = h.request(url, 'GET')[1]
+    data = json.loads(content.decode('utf-8'))
+
     # If there was an error in the access token info, abort.
-    if result.get('error') is not None:
-        response = make_response(json.dumps(result.get('error')), 500)
+    if data.get('error') is not None:
+        response = make_response(json.dumps(data.get('error')), 500)
         response.headers['Content-Type'] = 'application/json'
         return response
 
     # Verify that the access token is used for the intended user.
     gplus_id = credentials.id_token['sub']
-    if result['user_id'] != gplus_id:
+    if data['user_id'] != gplus_id:
         response = make_response(
             json.dumps("Token's user ID doesn't match given user ID."), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
 
     # Verify that the access token is valid for this app.
-    if result['issued_to'] != GOOGLE_CLIENT_ID:
+    if data['issued_to'] != GOOGLE_CLIENT_ID:
         response = make_response(
             json.dumps("Token's client ID does not match app's."), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -168,28 +171,46 @@ def fbconnect():
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter'), 401)
         response.headers['Content-Type'] = 'application/json'
-        return repsonse
-    access_token = request.data
+        return response
+    access_token = request.data.decode('utf-8')
 
     url = ('https://graph.facebook.com/v2.8/oauth/access_token?'
-           'grant_type=fb_exchange_token&client_id=%s&client_secret=%s'
-           '&fb_exchange_token=%s') % (FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, access_token)
+        'grant_type=fb_exchange_token&client_id=%s&client_secret=%s'
+        '&fb_exchange_token=%s') % (FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, 
+        access_token)
     h = httplib2.Http()
-    result = h.request(url, 'GET')[1]
-    data = json.loads(result)
+
+    content = h.request(url, 'GET')[1]
+    data = json.loads(content.decode('utf-8'))
+
+    if not 'access_token' in data:
+        reset_session()
+        flash('Facebook Login OAuth Failed!')
+        return redirect(url_for('showLogin'))
 
     # userinfo_url = "https://graph.facebook.com/v2.8/me"
-    # token = result.split("&")[0]
     token = 'access_token=' + data['access_token']
+    fb_fields = 'name,id,email,picture.type(large)'
 
-    url = 'https://graph.facebook.com/v2.8/me?%s&fields=name,id,email' % token
+    url = 'https://graph.facebook.com/v2.8/me?%s&fields=%s' % (token, fb_fields)
+
     h = httplib2.Http()
-    result = h.request(url, 'GET')[1]
-    data = json.loads(result)
+    content = h.request(url, 'GET')[1]
+    data = json.loads(content.decode('utf-8'))
+
+    if not 'name' in data:
+        reset_session()
+        flash('Facebook Login Failed!')
+        return redirect(url_for('showLogin'))
+
     login_session['provider'] = 'facebook'
     login_session['username'] = data["name"]
     login_session['email'] = data["email"]
     login_session['facebook_id'] = data["id"]
+    try:
+        login_session['picture'] = data["picture"]["data"]["url"]
+    except:
+        login_session['picture'] = ''
 
     # Check if user exists. It not, create a new one
     user_id = userIdGet(login_session['email'])
@@ -212,7 +233,8 @@ def fbconnect():
     output += login_session['username']
     output += '!</h1>'
     output += '<img src="'
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += login_session['picture']
+    output += '" style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
     flash("you are now logged in as %s" % login_session['username'])
     return output
 
