@@ -1,5 +1,8 @@
-requests==2.13.0
-Flask==0.12.1
-SQLAlchemy==1.1.9
-psycopg2==2.7.1
-flask-seasurf==0.2.2
+Flask==0.12.2
+Flask-SeaSurf==0.2.2
+Flask-SQLAlchemy==2.2
+httplib2==0.10.3
+Jinja2==2.9
+oauth2client==4.1.0
+requests==2.14.2
+SQLAlchemy==1.1.10
