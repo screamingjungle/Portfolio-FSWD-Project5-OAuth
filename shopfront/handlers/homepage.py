@@ -5,7 +5,6 @@ from shopfront import app
 from shopfront.handlers.functions import itemGet
 from shopfront.handlers.decorators import user_stats
 
-
 @app.route('/')
 @user_stats
 def homepage(*args, **kwargs):

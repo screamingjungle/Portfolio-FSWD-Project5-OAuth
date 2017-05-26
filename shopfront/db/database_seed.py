@@ -5,7 +5,7 @@ from shutil import copytree, rmtree
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from database_setup import Collection, Category, Base, Item, User, RELATIVE_IMAGE_DIRECTORY, ABSOLUTE_IMAGE_DIRECTORY, WORKING_DIRECTORY
+from shopfront.db.database_setup import Collection, Category, Base, Item, User, RELATIVE_IMAGE_DIRECTORY, ABSOLUTE_IMAGE_DIRECTORY, WORKING_DIRECTORY
 from shopfront.db.database_connect import connect_to_database
 
 
@@ -619,4 +619,4 @@ def db_seed():
         ))
         db_session.commit()
 
-    print "added items!"
+    print("added items!")

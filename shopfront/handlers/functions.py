@@ -1,5 +1,6 @@
 import re
 import string
+import random
 from unicodedata import normalize
 
 from shopfront import app
@@ -30,7 +31,6 @@ def processFormFields(form_fields,item,params,has_error=False):
                 continue
 
         if field in request.form:
-            print "%s = %s" % (field, request.form[field])
             if field == "tags":
                 setattr(item, field, clean_tags(request.form[field]))
             else:
@@ -117,7 +117,6 @@ def isLoggedIn():
 def redirect_back(default='homepage'):
     if request.referrer:
         referrer =  re.sub(r'/\d(/delete|\d/edit|new)/$', '', request.referrer)
-        print("referrer = %s" % referrer)
     return request.args.get('next') or \
            referrer or \
            url_for(default)
@@ -182,9 +181,6 @@ def userItemCount(**kwargs):
 
     res = item.first()._asdict()
 
-    #mysum = item.with_entities(func.count(Item.quantity)).scalar()
-    #print("mysum = %s" % mysum)
-
     db_session.close()
     return res
 
@@ -205,8 +201,7 @@ def itemSearch(search_term, **kwargs):
         return False
 
     try:
-        print("search = %s" % search_term)
-
+        #print("search = %s" % search_term)
         search_term = ilike_needle(search_term)
 
         order_field = 'created'
@@ -308,9 +303,6 @@ def itemGet(item_id=None, **kwargs):
             #  item = item.limit(int(app.config['PAGE_LIMIT']))
             res = item.all()
 
-            #mysum = item.with_entities(func.count(Item.quantity)).scalar()
-            #print("mysum = %s" % mysum)
-
         db_session.close()
         return res
     except:
@@ -337,8 +329,6 @@ def itemDelete(item_id, **kwargs):
     Returns False is Item was not deleted.
     """
     try:
-        print "item_id = %s" % item_id
-
         item = itemGet(item_id, **kwargs)
         ret = {item.id: item.name}
 
@@ -586,3 +576,9 @@ def slugify(text):
     return unicode(delim.join(result))
 
 
+def get_nonce():
+    """
+    Returns a nonce value to be used as an anti-CSRF token.
+    """
+    return ''.join(random.choice(string.ascii_uppercase + string.digits)
+                   for x in xrange(32))

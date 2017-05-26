@@ -122,9 +122,6 @@ def gconnect():
     login_session['user_id'] = user_id
     login_session['group'] = userGroupGet(user_id)
 
-    for d in data:  # TEST
-        print("gconnect| %s: %s" % (d, data[d]))
-
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
@@ -193,9 +190,6 @@ def fbconnect():
     login_session['username'] = data["name"]
     login_session['email'] = data["email"]
     login_session['facebook_id'] = data["id"]
-
-    for d in data:  # TEST
-        print("fbconnect| %s: %s" % (d, data[d]))
 
     # Check if user exists. It not, create a new one
     user_id = userIdGet(login_session['email'])

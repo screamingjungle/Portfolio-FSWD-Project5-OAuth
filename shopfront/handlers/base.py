@@ -19,19 +19,23 @@ def inject_menu():
         )
     return dict()
 
-@app.before_request
+#@app.before_request
 def csrf_protect():
     """
     Verifies that all POST requests have the correct anti-CSRF token. If the
     _csrf_token field is not present, or does not match the current session's
     token, the browser will be redirected to the home page.
+
+    NOT IN USE as SeaSurf does this
     """
     if request.method == 'POST':
-        post_token = request.form.get('_csrf_token')
+        post_token = request.args.get('_csrf_token')
         session_token = session.get('_csrf_token')
+
         if post_token is None or post_token != session_token:
             flash("Session expired")
-            return redirect(url_for('homepage'))
+            #return redirect(url_for('homepage'))
+            
 
 
 
