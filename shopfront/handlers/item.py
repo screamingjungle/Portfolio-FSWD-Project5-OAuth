@@ -49,16 +49,6 @@ def showItems(**kwargs):
         params=dict()
     )
 
-@app.route('/catalog.json')
-@app.route('/item/json')
-@user_logged_in
-def jsonItems(**kwargs):
-    """
-    Serve JSON with all or filtered items.
-    """
-    return showItems(json=True,**kwargs)
-
-
 @app.route(
     '/item/new',
     methods=['GET', 'POST'])

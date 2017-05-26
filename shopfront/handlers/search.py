@@ -16,15 +16,6 @@ def search(query=None,**kwargs):
     return redirect(url_for('searchResults', query=query))
 
 
-@app.route('/search_json/<query>')
-def searchJson(query,**kwargs):
-    """
-    Search API to return results in JSON format.
-    Used in menu search feature.
-    """
-    return searchResults(query=query, json=True, **kwargs)
-
-
 @app.route('/search_results/')
 @app.route('/search_results/<query>')
 def searchResults(query=None, **kwargs):
